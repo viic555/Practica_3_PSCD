@@ -32,7 +32,7 @@ public class Practica3 {
             // Generar tantos generadores como se pasen por argumento.
             // Generar tantos trabajadores como se pasen por argumento.
             // Generar una cola con la capacidad de trabajos que se pase por argumento.
-
+            
             // Distribuir entre los generadores la cantidad de trabajos que tienen que generar.
             // si la división de trabajos / generadores no es exacta, que del resto se encargue otro
             // encolar los trabajos que se vayan generando (semaforos en espera cuando la capacidad de la cola esté al máximo)
