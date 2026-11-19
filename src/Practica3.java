@@ -28,29 +28,26 @@ public class Practica3 {
             int trabajadores = enteroEnRango(args[2], "W", 8);
             int capacidadCola = enteroEnRango(args[3], "C", 32);
 
-            // Generar tantos trabajadores como se pasen por argumento.
-            Trabajador[] trabArray = new Trabajador[trabajadores];
             // Generar una cola con la capacidad de trabajos que se pase por argumento.
             ColaTrabajos cola = new ColaTrabajos(capacidadCola);
-
+            
             // Generar tantos generadores como se pasen por argumento.
             int base = trabajos / generadores;
             int resto = trabajos % generadores;
             int actual = 1;
-
+            
             Generador[] genArray = new Generador[generadores];
             for (int i = 0; i < generadores; i++) {
                 int cantidad = base + (i < resto ? 1 : 0);
                 int inicio = actual;
                 int fin = actual + cantidad - 1;
                 actual = fin + 1;
-
+                
                 genArray[i] = new Generador(i, cola, inicio, fin);
             }
-            // encolar los trabajos que se vayan generando (semaforos en espera cuando la
-            // capacidad de la cola esté al máximo)
-
-            // Que el trabajador recoja el trabajo y eleve al cuadrado el trabajo.
+            
+            // Generar tantos trabajadores como se pasen por argumento.
+            Trabajador[] trabArray = new Trabajador[trabajadores];
             // Mostrar el hilo trabajador y su resultado
             // Mostrar resumen
 
