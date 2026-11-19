@@ -16,8 +16,16 @@ public class Generador extends Thread {
         this.finTrabajos = finTrabajos;
     }
 
-    public void run(){
-        
+    @Override
+    public void run() {
+        try {
+            for (int trabajo = inicioTrabajos; trabajo <= finTrabajos; trabajo++) {
+                cola.insertar(trabajo);
+                generados++;
+            }
+        } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+        }
     }
     
 }
