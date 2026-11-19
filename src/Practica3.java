@@ -1,3 +1,5 @@
+import java.util.Map;
+
 public class Practica3 {
 
     private static int enteroEnRango(String texto, String nombre, int maximo) {
@@ -35,6 +37,13 @@ public class Practica3 {
             int base = trabajos / generadores;
             int resto = trabajos % generadores;
             int actual = 1;
+
+            // Generar tantos trabajadores como se pasen por argumento.
+            Trabajador[] trabArray = new Trabajador[trabajadores];
+            for (int i = 0; i < trabajadores; i++) {                
+                trabArray[i] = new Trabajador(i, cola);
+                trabArray[i].start();
+            }
             
             Generador[] genArray = new Generador[generadores];
             for (int i = 0; i < generadores; i++) {
@@ -44,12 +53,40 @@ public class Practica3 {
                 actual = fin + 1;
                 
                 genArray[i] = new Generador(i, cola, inicio, fin);
+                genArray[i].start();
             }
             
-            // Generar tantos trabajadores como se pasen por argumento.
-            Trabajador[] trabArray = new Trabajador[trabajadores];
-            // Mostrar el hilo trabajador y su resultado
-            // Mostrar resumen
+
+            for (Generador generador : genArray) {
+                generador.join();
+            }
+
+            for (int i = 0; i < trabajadores; i++) {
+                cola.insertar(-1);
+            }
+
+            for (Trabajador trabajador : trabArray) {
+                trabajador.join();
+            }
+
+            int totalProcesados = 0;
+            for (int i = 0; i < trabArray.length; i++) {
+                Map<Integer, Integer> mapa = trabArray[i].getResultados();
+                totalProcesados += mapa.size();
+                for (Map.Entry<Integer, Integer> entrada : mapa.entrySet()) {
+                    System.out.println("Trabajador " + i + " -> " + entrada.getKey() + "^2 = " + entrada.getValue());
+                }
+            }
+
+            int totalGenerados = 0;
+            for (Generador generador : genArray) {
+                totalGenerados += generador.getGenerados();
+            }
+
+            System.out.println("--- Resumen ---");
+            System.out.println("Trabajos esperados: " + trabajos);
+            System.out.println("Trabajos generados: " + totalGenerados);
+            System.out.println("Trabajos procesados: " + totalProcesados);
 
         } catch (IllegalArgumentException ex) {
             System.err.println("Error: " + ex.getMessage());
