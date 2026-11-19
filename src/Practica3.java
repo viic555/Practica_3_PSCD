@@ -19,28 +19,36 @@ public class Practica3 {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        try{
-            if(args.length != 4){
+        try {
+            if (args.length != 4) {
                 throw new IllegalArgumentException("El numero de argumentos debe ser exactamente 4.");
             }
             int trabajos = enteroEnRango(args[0], "N", 1000);
             int generadores = enteroEnRango(args[1], "P", 8);
-            int trabajadores = enteroEnRango(args[2],"W", 8);
-            int capacidadCola= enteroEnRango(args[3],"C", 32);
+            int trabajadores = enteroEnRango(args[2], "W", 8);
+            int capacidadCola = enteroEnRango(args[3], "C", 32);
 
-            // Generar tantos generadores como se pasen por argumento.
-            Generador[] genArray = new Generador[generadores];
             // Generar tantos trabajadores como se pasen por argumento.
             Trabajador[] trabArray = new Trabajador[trabajadores];
             // Generar una cola con la capacidad de trabajos que se pase por argumento.
             ColaTrabajos cola = new ColaTrabajos(capacidadCola);
-            
-            // Distribuir entre los generadores la cantidad de trabajos que tienen que generar.
-            // autoincrementar id de cada generador
-            // dividir número de trabajos entre número de generadores
-            // si la división no es exacta, que del resto se encargue otro
-            
-            // encolar los trabajos que se vayan generando (semaforos en espera cuando la capacidad de la cola esté al máximo)
+
+            // Generar tantos generadores como se pasen por argumento.
+            int base = trabajos / generadores;
+            int resto = trabajos % generadores;
+            int actual = 1;
+
+            Generador[] genArray = new Generador[generadores];
+            for (int i = 0; i < generadores; i++) {
+                int cantidad = base + (i < resto ? 1 : 0);
+                int inicio = actual;
+                int fin = actual + cantidad - 1;
+                actual = fin + 1;
+
+                genArray[i] = new Generador(i, cola, inicio, fin);
+            }
+            // encolar los trabajos que se vayan generando (semaforos en espera cuando la
+            // capacidad de la cola esté al máximo)
 
             // Que el trabajador recoja el trabajo y eleve al cuadrado el trabajo.
             // Mostrar el hilo trabajador y su resultado
@@ -55,6 +63,5 @@ public class Practica3 {
             System.exit(3);
         }
     }
-
 
 }
